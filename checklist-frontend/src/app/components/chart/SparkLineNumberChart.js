@@ -43,11 +43,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SparkLineNumberChart = ({ loading, title, icon, data, oldData, ...rest }) => {
+const SparkLineNumberChart = ({ loading = 'loading', title, icon, data, oldData, ...rest }) => {
   const classes = useStyles();
-  const percent = ((data/oldData)).toLocaleString("en", {style: "percent"});
+  //const percent = ((data/oldData)).toLocaleString("en", {style: "percent"});
 
-  if(!data) return <SparkLineSkeleton />
+  if(loading === 'loading') return <SparkLineSkeleton />
   return (
     <Paper className={classes.paper} elevation={0}>
       <Box component='div' display='flex' className={classes.root}>
@@ -56,12 +56,12 @@ const SparkLineNumberChart = ({ loading, title, icon, data, oldData, ...rest }) 
             {title}
           </Typography>
           <Typography variant='h3' className={classes.subtitle}>
-            {data}
-            {
+            {Number(data)}
+            {/*
               oldData && (
                 <Chip label={percent} size='small' className={classes.chip} style={{backgroundColor: '#447104'}} />
               )
-            }
+            */}
           </Typography>
         </Box>
         <Avatar className={classes.avatar}>

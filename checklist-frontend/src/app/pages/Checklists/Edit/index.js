@@ -50,6 +50,7 @@ import useChecklist from '../../../utils/useChecklist';
 import useUnity from '../../../utils/useUnity';
 import { useParams, useHistory } from 'react-router-dom';
 import ErrorPage from '../../../shared/pages/Error';
+import ReactInputMask from 'react-input-mask';
 
 const CheckListItem = (props) => {
   const {
@@ -251,6 +252,10 @@ const CheckListEditForm = () => {
       .min(5, 'Digite um nome válido com no minimo 5 caracteres'),
     descricao: Yup.string().required('A descrição é obrigatória')
       .min(10, 'Digite uma descrição com no minimo 10 caracteres'),
+    answer_before: Yup.string().required('O campo é obrigatório')
+      .min(4, 'Digite um horário válido. Ex: 22:00'),
+    answer_after: Yup.string().required('O campo é obrigatório')
+      .min(4, 'Digite um horário válido. Ex: 22:00'),
     expirationTime: Yup.object().shape({
       expiratedAt: Yup.date().when('isUndefined', {
         is: false,
@@ -485,57 +490,55 @@ const CheckListEditForm = () => {
                 </Box>
               </Box>
               <Box>
-                <Typography variant='h6' className={classes.title} gutterBottom>
-                  Data de Expiração
+              <Typography variant='h6' className={classes.title} gutterBottom>
+                  Disponibilidade
                 </Typography>
                 <Divider />
                 <Typography variant='subtitle1' className={classes.subTitle} gutterBottom>
-                  Define até que data este checklist estará disponível ao usuário.
+                  Define um determinado período ao qual o checklist ficará disponível ao usuário
                 </Typography>
-                <KeyboardDateTimePicker
-                  autoOk
-                  variant="inline"
-                  ampm={false}
-                  disabled={values.expirationTime.isUndefined}
-                  name='expirationTime.expiratedAt'
-                  label="Data de Expiração"
-                  value={new Date(values.expirationTime.expiratedAt)}
-                  margin='normal'
-                  onChange={date => setFieldValue('expirationTime.expiratedAt', new Date(date).toISOString(), true)}
-                  inputVariant='outlined'
-                  InputAdornmentProps={{ position: "end" }}
-                  helperText={touched.expirationTime?.expiratedAt ? errors.expirationTime?.expiratedAt : ""}
-                  error={touched.expirationTime?.expiratedAt && Boolean(errors.expirationTime?.expiratedAt)}
-                  disablePast
-                  format="dd/MM/yyyy HH:mm"
-                />
-                <Box display='flex' flexDirection='row' alignItems='center'>
-                  <Switch
-                  name='expirationTime.isUndefined'
-                  value={values.expirationTime.isUndefined}
-                  checked={values.expirationTime.isUndefined}
-                  onChange={handleChange}
-                  color="primary"/>
-                  <Typography>Validade Infinita</Typography>
-                  <Switch
-                  name='ativo'
-                  value={values.ativo}
-                  checked={values.ativo}
-                  onChange={handleChange}
-                  color="primary"/>
-                  <Tooltip 
-                  title={values.ativo ? 
-                    'Ativado! Checklist pode ser respondido pelos usuários escolhidos.' 
-                    : 'Desativado! Checklist não pode ser respondido por ninguém.'
-                  } 
-                  placement="right">
-                    {
-                      values.ativo ? 
-                        <Chip label="Ativo" style={{backgroundColor: '#447104', fontWeight: 600, color: '#fff'}}/> 
-                      : 
-                        <Chip label="Inativo" style={{backgroundColor: '#ba000d', fontWeight: 600, color: '#fff'}}/>
-                    }
-                  </Tooltip>
+                <Typography variant='subtitle2' className={classes.subTitle} gutterBottom>
+                  Use o formato de 24 horas
+                </Typography>
+                <Box display='flex' flexDirection='row'>
+                  <ReactInputMask
+                  mask="99:99" 
+                  onChange={handleChange} 
+                  onBlur={(e) => setFieldValue('answer_before', e.target.value)}
+                  value={values.answer_before}>
+                    {() => {
+                      return (
+                        <TextField 
+                        name="answer_before"
+                        variant='outlined'
+                        margin='normal'
+                        size='small'
+                        style={{ marginRight: '10px' }}
+                        helperText={errors.answer_before}
+                        error={Boolean(errors.answer_before)}
+                        label={values.answer_before ? '' : 'De:'} />
+                      )
+                    }}
+                  </ReactInputMask>
+
+                  <ReactInputMask
+                  mask="99:99" 
+                  onChange={handleChange} 
+                  onBlur={(e) => setFieldValue('answer_after', e.target.value)}
+                  value={values.answer_after}>
+                    {() => {
+                      return (
+                        <TextField 
+                        name="answer_after"
+                        variant='outlined'
+                        margin='normal'
+                        size='small'
+                        helperText={errors.answer_after}
+                        error={Boolean(errors.answer_after)}
+                        label={values.answer_after ? '': 'Até:'} />
+                      )
+                    }}
+                  </ReactInputMask>
                 </Box>
                 <Typography variant='subtitle1' className={classes.subTitle} gutterBottom>
                   Define quanto tempo o usuário tem para terminar de responder o checklist após começá-lo.

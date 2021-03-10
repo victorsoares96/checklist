@@ -23,6 +23,7 @@ import { useFetch } from '../../../utils/useFetch';
 /* Icon's */
 import { RiFilterOffFill, RiFilterFill } from 'react-icons/ri';
 import { Skeleton } from '@material-ui/lab';
+import { startOfMonth } from 'date-fns';
 
 const Consolidado = () => {
 
@@ -30,8 +31,8 @@ const Consolidado = () => {
 
   const [filterDialogOpenStatus, setFilterDialogOpenStatus] = useState(false);
   
-  const initialBeforeDate = new Date(`01/${new Date().getMonth()+1}/${new Date().getFullYear()}`).toISOString();
-  const initialAfterDate = new Date().toISOString();
+  const initialBeforeDate = new Date(startOfMonth(new Date()));
+  const initialAfterDate = new Date();
   const [beforeDate, setBeforeDate] = useState(initialBeforeDate);
   const [afterDate, setAfterDate] = useState(initialAfterDate);
 
@@ -132,7 +133,13 @@ const Consolidado = () => {
         {
           data.map((item) =>
             <Grid key={item.title} item xs={12} sm={6} md={6} lg={3} zeroMinWidth>
-              <SparkLineNumberChart key={item.title} loading={isLoading} title={item.title} icon={item.icon} data={item.data} oldData={item.oldData} />
+              <SparkLineNumberChart 
+              key={item.title} 
+              loading={item.data} 
+              title={item.title} 
+              icon={item.icon} 
+              data={item.data} 
+              oldData={item.oldData} />
             </Grid>
           )
         }  

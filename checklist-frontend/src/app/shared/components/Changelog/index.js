@@ -14,10 +14,8 @@ const Changelog = ({ open, handleClose }) => {
       <DialogContent>
         <DialogContentText id="alert-dialog-description" component='div'>
           <ul>
-            <li>Melhoria significativa de performance na obtenção de dados da "Dashboard" e "Visualizar Respostas"</li>
-            <li>Adicionado prazo para responder um checklist</li>
-            <li>Correção de bugs e pequenas melhorias</li>
-            <li>Adicionado página de "Deixe sua Sugestão"</li>
+            <li>Adicionado período especifico para responder determinado checklist</li>
+            <li>Correção de bugs</li>
           </ul>
         </DialogContentText>
       </DialogContent>

@@ -26,6 +26,7 @@ import { useFetch } from '../../../utils/useFetch';
 import BarChartLoading from '../../../components/chart/BarChartLoading';
 import getChecklistName from '../../../utils/getChecklistName';
 import FilterDialog from '../../../shared/components/FilterDialog';
+import { startOfMonth } from 'date-fns';
 
 const ChecklistMedia = () => {
   const colors = [
@@ -43,8 +44,8 @@ const ChecklistMedia = () => {
   
   const [checklistFilter, setChecklistFilter] = useState(' ');
 
-  const initialBeforeDate = new Date(`01/${new Date().getMonth()+1}/${new Date().getFullYear()}`).toISOString();
-  const initialAfterDate = new Date().toISOString();
+  const initialBeforeDate = new Date(startOfMonth(new Date()));
+  const initialAfterDate = new Date();
   const [beforeDate, setBeforeDate] = useState(initialBeforeDate);
   const [afterDate, setAfterDate] = useState(initialAfterDate);
 

@@ -1,18 +1,20 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, InputLabel, Typography } from '@material-ui/core';
-import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React, { useState } from 'react';
-import tomorrow from '../../../utils/tomorrow';
+import DateFnsUtils from '@date-io/date-fns';
+import { Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, InputLabel, Typography } from '@material-ui/core';
+import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { startOfMonth, startOfWeek, startOfYear } from 'date-fns';
 
 const FilterDialog = ({ filterDate, openStatus, handleOpenStatus }) => {
-  const [beforeDate, setBeforeDate] = useState('2020-01-08T00:00:00');
-  const [afterDate, setAfterDate] = useState(new Date(tomorrow()));
+  const defaultBeforeDate = startOfMonth(new Date());
+  const defaultAfterDate = new Date();
+  const [beforeDate, setBeforeDate] = useState(defaultBeforeDate);
+  const [afterDate, setAfterDate] = useState(defaultAfterDate);
 
   const resetFilters = () => {
-    setBeforeDate('2020-01-08T00:00:00');
-    setAfterDate(new Date(tomorrow()));
+    setBeforeDate(defaultBeforeDate);
+    setAfterDate(defaultAfterDate);
     filterDate(beforeDate, afterDate);
-    //handleOpenStatus();
+    handleOpenStatus();
   }
 
   return (
@@ -27,6 +29,27 @@ const FilterDialog = ({ filterDate, openStatus, handleOpenStatus }) => {
       <DialogContent>
         <DialogContentText id="alert-dialog-description" component='div'>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Box marginBottom='20px'>
+              <Typography color='textSecondary' variant='subtitle1'>
+                Filtro rápido:
+              </Typography>
+              <Chip label='Hoje' onClick={() => {
+                setBeforeDate(new Date().setHours(0, 0, 0));
+                setAfterDate(new Date());
+              }} />
+              <Chip style={{ marginLeft: '10px' }} label='Semana' onClick={() => {
+                setBeforeDate(startOfWeek(new Date(), { weekStartsOn: 1 }));
+                setAfterDate(new Date());
+              }} />
+              <Chip style={{ marginLeft: '10px' }} label='Mês' onClick={() => {
+                setBeforeDate(startOfMonth(new Date()));
+                setAfterDate(new Date());
+              }} />
+              <Chip style={{ marginLeft: '10px' }} label='Ano' onClick={() => {
+                setBeforeDate(startOfYear(new Date()));
+                setAfterDate(new Date());
+              }} />
+            </Box>
             <InputLabel style={{ fontWeight: 600, fontSize: 14, margin: '10px 0' }}>
               De:
             </InputLabel>
