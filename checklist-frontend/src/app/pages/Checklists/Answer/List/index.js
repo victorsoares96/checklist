@@ -66,7 +66,7 @@ const ListAnswers = () => {
           queryName.current.value,
           sortType
         );
-        setPageCount((count / PER_PAGE).toFixed(0));
+        setPageCount(Math.ceil(count / PER_PAGE));
         setAnsweredsChecklists({ results, count });
       } else if(user.type === 'gerencial') {
         const { results, count } = await listAnsweredChecklists(
@@ -78,7 +78,7 @@ const ListAnswers = () => {
           queryName.current.value,
           sortType
         );
-        setPageCount((count / PER_PAGE).toFixed(0));
+        setPageCount(Math.ceil(count / PER_PAGE));
         setAnsweredsChecklists({ results, count });
       }
     } catch (error) {
